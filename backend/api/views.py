@@ -40,6 +40,7 @@ class IngredientViewSet(ListRetrieveCustomViewSet):
     serializer_class = IngredientSerializers
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientSearchFilter
+    permission_classes = (permissions.AllowAny,)
     pagination_class = None
     
     
