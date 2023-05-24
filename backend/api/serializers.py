@@ -142,7 +142,7 @@ class RecipeCreateSerializer(ModelSerializer):
             )
         RecipeIngredients.objects.bulk_create(ingredients_list)
 
-    def validate(self, data):
+    '''def validate(self, data):
         ingredients_list = []
         ingredients_in_recipe = data.get('RecipeIngredients')
         for ingredient in ingredients_in_recipe:
@@ -166,7 +166,26 @@ class RecipeCreateSerializer(ModelSerializer):
                     'error': 'Время приготовления должно быть не менее 1 мин!'
                 }
             )
-        return data
+        return data'''
+        
+        def validate(self, data):
+        ingredients = self.initial_data.get('ingredients')
+        ingredients_list = {}
+        if ingredients:
+            for ingredient in ingredients:
+                if ingredient.get('id') in ingredients_list:
+                    raise ValidationError(
+                        'Ингредиенты в рецепте не должны повторяться!'
+                    )
+                if int(ingredient.get('amount')) <= 0:
+                    raise ValidationError('Ингредиентов не должно быть менее одного!')
+                
+                ingredients_list[ingredient.get('id')] = (
+                    ingredients_list.get('amount')
+                )
+            return data
+        else:
+            raise ValidationError('Добавьте ингредиент в рецепт!')
 
     def to_representation(self, instance):
         serializer = RecipeSerializer(
