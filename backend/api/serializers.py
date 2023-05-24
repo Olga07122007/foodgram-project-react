@@ -168,7 +168,7 @@ class RecipeCreateSerializer(ModelSerializer):
             )
         return data'''
         
-        def validate(self, data):
+    def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
         ingredients_list = {}
         if ingredients:
