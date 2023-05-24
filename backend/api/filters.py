@@ -36,7 +36,7 @@ class RecipeSearchFilter(FilterSet):
     name = filters.CharFilter()
     
     author = ModelMultipleChoiceFilter(
-        field_name='author__username',
+        field_name='author__id',
         to_field_name='username',
         queryset=User.objects.all()
     )
