@@ -35,11 +35,6 @@ class RecipeSearchFilter(FilterSet):
     
     name = filters.CharFilter()
     
-    '''author = ModelMultipleChoiceFilter(
-        field_name='author__id',
-        to_field_name='username',
-        queryset=User.objects.all()
-    )'''
     author = filters.ModelChoiceFilter(queryset=User.objects.all())
     
     def is_favorited_filter(self, queryset, name, value):
