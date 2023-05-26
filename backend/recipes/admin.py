@@ -1,11 +1,11 @@
 from django.contrib import admin
 
 from .models import (
-    Favorite, 
-    Ingredient, 
-    Recipe, 
-    RecipeIngredients, 
-    ShoppingCart, 
+    Favorite,
+    Ingredient,
+    Recipe,
+    RecipeIngredients,
+    ShoppingCart,
     Tag
 )
 
@@ -22,8 +22,8 @@ class TagAdmin(admin.ModelAdmin):
         'slug',
     )
     list_filter = ('name',)
-    
-   
+
+
 class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -31,19 +31,19 @@ class IngredientAdmin(admin.ModelAdmin):
     )
     search_fields = ('name',)
     list_filter = ('name',)
-    
+
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
-        'pk', 'name', 'author', 
+        'pk', 'name', 'author',
         'pub_date',
     )
     search_fields = ('name',)
-    readonly_fields = ('Был_добавлен_в_избранное',)
+    readonly_fields = ('был_добавлен_в_избранное',)
     list_filter = ('author', 'name', 'tags', 'pub_date',)
     inlines = (RecipeIngredientsInline,)
-    
-    def Был_добавлен_в_избранное(self, instance):
+
+    def был_добавлен_в_избранное(self, instance):
         return instance.favorites.count()
 
 
@@ -51,13 +51,13 @@ class RecipeIngredientsAdmin(admin.ModelAdmin):
     list_display = ('pk', 'recipe', 'ingredient', 'amount',)
     search_fields = ('recipe', 'ingredient',)
     list_filter = ('recipe', 'ingredient',)
-    
+
 
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ['pk', 'user', 'recipe']
     search_fields = ['user', 'recipe']
     list_filter = ['user', 'recipe']
-    
+
 
 class ShoppingCartAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)

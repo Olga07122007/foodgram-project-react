@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework.serializers import(
+from rest_framework.serializers import (
     CharField,
     CurrentUserDefault,
     ModelSerializer,
@@ -8,11 +8,11 @@ from rest_framework.serializers import(
     SerializerMethodField,
 )
 
-from recipes.models import(
+from recipes.models import (
     Favorite,
-    Ingredient, 
-    Recipe, 
-    RecipeIngredients, 
+    Ingredient,
+    Recipe,
+    RecipeIngredients,
     ShoppingCart,
     Tag
 )
@@ -23,13 +23,13 @@ class TagSerializers(ModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
-        
-        
+
+
 class IngredientSerializers(ModelSerializer):
     class Meta:
         model = Ingredient
         fields = '__all__'
-        
+
 
 class IngredientInRecipeSerializer(ModelSerializer):
     id = PrimaryKeyRelatedField(
@@ -44,10 +44,11 @@ class IngredientInRecipeSerializer(ModelSerializer):
         source='ingredient.measurement_unit',
         read_only=True
     )
+
     class Meta:
         model = RecipeIngredients
         fields = ('id', 'name', 'measurement_unit', 'amount',)
-        
+
 
 class RecipeSerializer(ModelSerializer):
     author = CustomUserSerializer()
@@ -75,12 +76,12 @@ class RecipeSerializer(ModelSerializer):
         return ShoppingCart.objects.filter(
             recipe=obj, user=request.user
         ).exists()
-        
+
     class Meta:
         model = Recipe
         fields = '__all__'
-        
-        
+
+
 class RecipeCreateSerializer(ModelSerializer):
     author = CustomUserSerializer(
         read_only=True,
@@ -93,13 +94,13 @@ class RecipeCreateSerializer(ModelSerializer):
     ingredients = IngredientInRecipeSerializer(
         source='RecipeIngredients',
         many=True,
-        
+
     )
     image = Base64ImageField(
         required=False,
         allow_null=True,
     )
-    
+
     def create(self, validated_data):
         author = self.context.get('request').user
         tags = validated_data.pop('tags')
@@ -167,14 +168,14 @@ class RecipeCreateSerializer(ModelSerializer):
                 }
             )
         return data
-        
+
     def to_representation(self, instance):
         serializer = RecipeSerializer(
             instance,
             context={'request': self.context.get('request')}
         )
         return serializer.data
-        
+
     class Meta:
         model = Recipe
         fields = '__all__'
@@ -187,10 +188,11 @@ class FavoriteSerializer(ModelSerializer):
         queryset=Recipe.objects.all(),
         write_only=True,
     )
+
     def create(self, validated_data):
         return Favorite.objects.create(
             user=self.context.get('request').user, **validated_data)
-            
+
     class Meta:
         model = Favorite
         fields = ('recipe', 'user', )
@@ -213,11 +215,10 @@ class ShoppingCartSerializer(ModelSerializer):
 
     def create(self, validated_data):
         return ShoppingCart.objects.create(
-            user=self.context.get('request').user, 
-                **validated_data
+            user=self.context.get('request').user,
+            **validated_data
         )
 
     class Meta:
         model = ShoppingCart
-        fields = ('recipe', 'user',)        
-        
+        fields = ('recipe', 'user',)

@@ -6,40 +6,40 @@ from users.models import User
 
 class Tag(models.Model):
     name = models.CharField(
-        verbose_name='Название тега', 
-        max_length=200, 
+        verbose_name='Название тега',
+        max_length=200,
         unique=True
     )
     color = ColorField(
         verbose_name='Цвет HEX',
-        max_length=7,    
+        max_length=7,
         unique=True,
     )
-    
+
     slug = models.SlugField(
-        verbose_name='Слаг тега', 
+        verbose_name='Слаг тега',
         max_length=200,
         unique=True,
     )
-    
+
     class Meta():
         ordering = ['name']
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
-        
+
     def __str__(self):
         return self.name
-        
-        
+
+
 class Ingredient(models.Model):
     name = models.CharField(
-        verbose_name='Название ингредиента', 
-        max_length=200, 
+        verbose_name='Название ингредиента',
+        max_length=200,
         unique=True
     )
-    
+
     measurement_unit = models.CharField(
-        verbose_name='Единица измерения', 
+        verbose_name='Единица измерения',
         max_length=200
     )
 
@@ -47,11 +47,11 @@ class Ingredient(models.Model):
         ordering = ['name']
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        
+
     def __str__(self):
         return self.name
-        
-        
+
+
 class Recipe(models.Model):
     author = models.ForeignKey(
         User,
@@ -59,40 +59,40 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Автор'
     )
-    
+
     name = models.CharField(
-        verbose_name='Название рецепта', 
-        max_length=200, 
+        verbose_name='Название рецепта',
+        max_length=200,
         unique=True
     )
-    
+
     tags = models.ManyToManyField(
-        Tag, 
+        Tag,
         verbose_name='Тег'
     )
-    
+
     ingredients = models.ManyToManyField(
         Ingredient,
         through='RecipeIngredients',
         related_name='recipes',
         verbose_name='Ингредиенты'
     )
-    
+
     image = models.ImageField(
-        verbose_name='Изображение', 
+        verbose_name='Изображение',
         upload_to='images/'
     )
-    
+
     text = models.TextField(
         verbose_name='Описание'
     )
-        
+
     cooking_time = models.PositiveIntegerField(
         verbose_name='Время приготовления'
     )
-        
+
     pub_date = models.DateTimeField(
-        verbose_name='Дата публикации', 
+        verbose_name='Дата публикации',
         auto_now_add=True
     )
 
@@ -106,24 +106,24 @@ class Recipe(models.Model):
                 name='unique_author_name'
             )
         ]
-        
+
     def __str__(self):
         return self.name
-        
-        
+
+
 class RecipeIngredients(models.Model):
     recipe = models.ForeignKey(
-        Recipe, 
-        on_delete=models.CASCADE, 
+        Recipe,
+        on_delete=models.CASCADE,
         related_name='recipeingredients'
     )
-    
+
     ingredient = models.ForeignKey(
-        Ingredient, 
-        on_delete=models.CASCADE, 
+        Ingredient,
+        on_delete=models.CASCADE,
         related_name='recipeingredients'
     )
-    
+
     amount = models.PositiveIntegerField('Количество')
 
     class Meta:
@@ -138,8 +138,8 @@ class RecipeIngredients(models.Model):
 
     def __str__(self):
         return f'Ингредиент: {self.ingredient}, Рецепт: {self.recipe}'
-        
-        
+
+
 class Favorite(models.Model):
     user = models.ForeignKey(
         User,
@@ -164,7 +164,8 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f'{self.recipe.name} избран {self.user.username}'
-        
+
+
 class ShoppingCart(models.Model):
     user = models.ForeignKey(
         User,
@@ -189,5 +190,3 @@ class ShoppingCart(models.Model):
 
     def __str__(self):
         return f'{self.recipe.name} в списке покупок для {self.user.username}'
-        
-

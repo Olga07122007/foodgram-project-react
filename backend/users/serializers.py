@@ -1,7 +1,6 @@
-from djoser.serializers import(
-    UserCreateSerializer, 
-    UserSerializer,
-    SetPasswordSerializer
+from djoser.serializers import (
+    UserCreateSerializer,
+    UserSerializer
 )
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
@@ -20,7 +19,7 @@ class CustomUserSerializer(UserSerializer):
         if user.is_anonymous:
             return False
         return Subscription.objects.filter(user=user, author=obj).exists()
-        
+
     class Meta:
         model = User
         fields = (
@@ -37,13 +36,13 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             'last_name', 'password',
         )
 
-       
+
 class RecipeSubscribeSerializer(ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
-        
-        
+
+
 class SubscribeSerializer(CustomUserSerializer):
     recipes_count = SerializerMethodField()
     recipes = SerializerMethodField()
@@ -65,13 +64,13 @@ class SubscribeSerializer(CustomUserSerializer):
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
-        
+
     def get_recipes(self, obj):
         limit = (
             self.context['request'].query_params.get('recipes_limit')
         )
         recipes = obj.recipes.all()
-        
+
         if limit is not None:
             limit = int(limit)
             serializer = RecipeSubscribeSerializer(
@@ -80,7 +79,7 @@ class SubscribeSerializer(CustomUserSerializer):
         else:
             serializer = RecipeSubscribeSerializer(recipes, many=True)
         return serializer.data
-        
+
     class Meta(CustomUserSerializer.Meta):
         fields = CustomUserSerializer.Meta.fields + (
             'recipes_count', 'recipes'

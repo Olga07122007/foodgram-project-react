@@ -19,36 +19,36 @@ ROLE_CHOICES = [
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
-    
+
     REQUIRED_FIELDS = [
         'username',
         'first_name',
         'last_name',
     ]
-    
+
     email = models.EmailField(
         verbose_name='Электронная почта',
         max_length=254,
         unique=True,
     )
-    
+
     username = models.CharField(
         verbose_name='Имя пользователя',
         max_length=150,
         unique=True,
         validators=(validate_username, UsernameValidator())
     )
-    
+
     first_name = models.CharField(
         verbose_name='Имя',
         max_length=150,
     )
-    
+
     last_name = models.CharField(
         verbose_name='Фамилия',
         max_length=150,
     )
-    
+
     role = models.CharField(
         verbose_name='Пользовательская роль',
         max_length=50,
@@ -64,15 +64,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-        
+
     @property
     def is_user(self):
         return self.role == USER
-    
+
     @property
     def is_admin(self):
         return self.role == ADMIN or self.is_superuser or self.is_staff
-  
+
 
 class Subscription(models.Model):
     user = models.ForeignKey(
