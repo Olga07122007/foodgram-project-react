@@ -22,7 +22,7 @@
 ![python version](https://img.shields.io/badge/Docker-yellowgreen)
 ![python version](https://img.shields.io/badge/DockerHub-yellowgreen)
 ![python version](https://img.shields.io/badge/JS-yellowgreen)
-![python version](https://img.shields.io/badge/GitHub-Actions-yellowgreen)
+![python version](https://img.shields.io/badge/GitHub-Actions-F7DF1E)
 
 ## Как запустить проект:
 
@@ -31,7 +31,7 @@
 ```
 git clone https://github.com/Olga07122007/foodgram-project-react.git
 cd foodgram-project-react/
-cd infra/`
+cd infra/
 ```
 
 В директории `infra/` создать файл `.env`, согласно примеру:
@@ -85,5 +85,5 @@ docker-compose exec backend python manage.py load_ingredients ingredients.json
 
 
 ### Адресa:
-Проект доступен по адресу: http://158.160.5.17/
+Проект доступен по адресу: http://158.160.5.17/  
 Админка Django: http://158.160.5.17/admin/
