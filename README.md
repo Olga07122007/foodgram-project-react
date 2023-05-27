@@ -20,9 +20,9 @@
 ![python version](https://img.shields.io/badge/Nginx-yellowgreen)
 ![python version](https://img.shields.io/badge/gunicorn-yellowgreen)
 ![python version](https://img.shields.io/badge/Docker-yellowgreen)
-![python version](https://img.shields.io/badge/DockerHub-yellowgreen)
-![python version](https://img.shields.io/badge/JS-yellowgreen)
-![python version](https://img.shields.io/badge/GitHub-Actions-F7DF1E)
+![python version](https://img.shields.io/badge/DockerHub-008000)
+![python version](https://img.shields.io/badge/JS-FFD700)
+![python version](https://img.shields.io/badge/GitHubActions-C71585)
 
 ## Как запустить проект:
 
