@@ -5,7 +5,7 @@ from rest_framework.serializers import (
     CurrentUserDefault,
     ModelSerializer,
     PrimaryKeyRelatedField,
-    SerializerMethodField,
+    SerializerMethodField
 )
 
 from recipes.models import (
@@ -63,19 +63,27 @@ class RecipeSerializer(ModelSerializer):
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
-        if request.user.is_anonymous:
-            return False
-
-        return Favorite.objects.filter(recipe=obj, user=request.user).exists()
+        if (
+            request.user.is_authenticated
+            and Favorite.objects.filter(
+                recipe=obj,
+                user=request.user
+            ).exists()
+        ):
+            return True
+        return False
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
-        if request.user.is_anonymous:
-            return False
-
-        return ShoppingCart.objects.filter(
-            recipe=obj, user=request.user
-        ).exists()
+        if (
+            request.user.is_authenticated
+            and ShoppingCart.objects.filter(
+                recipe=obj,
+                user=request.user
+            ).exists()
+        ):
+            return True
+        return False
 
     class Meta:
         model = Recipe
@@ -193,9 +201,25 @@ class FavoriteSerializer(ModelSerializer):
         return Favorite.objects.create(
             user=self.context.get('request').user, **validated_data)
 
+    def validate(self, data):
+        object = Favorite.objects.filter(
+            recipe=data['recipe'],
+            user=self.context['request'].user
+        )
+        if self.context['request'].method == 'DELETE':
+            raise ValidationError(
+                'Этот рецепт не был добавлен в избранное!'
+            )
+        if self.context['request'].method == 'POST' and object.exists():
+            raise ValidationError(
+                'Этот рецепт уже был добавлен в избранное!'
+            )
+
+        return data
+
     class Meta:
         model = Favorite
-        fields = ('recipe', 'user', )
+        fields = ('recipe', 'user',)
 
 
 class RecipeLightSerializer(ModelSerializer):
@@ -218,6 +242,22 @@ class ShoppingCartSerializer(ModelSerializer):
             user=self.context.get('request').user,
             **validated_data
         )
+
+    def validate(self, data):
+        object = ShoppingCart.objects.filter(
+            recipe=data['recipe'],
+            user=self.context['request'].user
+        )
+        if self.context['request'].method == 'DELETE':
+            raise ValidationError(
+                'Этот рецепт не был добавлен в список покупок!'
+            )
+        if self.context['request'].method == 'POST' and object.exists():
+            raise ValidationError(
+                'Этот рецепт уже был добавлен в список покупок!'
+            )
+
+        return data
 
     class Meta:
         model = ShoppingCart

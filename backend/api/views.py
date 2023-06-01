@@ -69,35 +69,20 @@ class RecipeViewSet(viewsets.ModelViewSet):
             context={'request': request}
         )
 
-        if request.method == "POST":
-            if model.objects.filter(user=request.user, recipe=recipe).exists():
-                return Response(
-                    {
-                        'errors': 'Этот рецепт уже добавлен'
-                        'в список покупок(в избранное)!'
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(
-                status=status.HTTP_201_CREATED,
-                data=self.get_serializer(recipe).data
-            )
-
         object = model.objects.filter(
             recipe=recipe, user=request.user
         )
-        if not object.exists():
-            return Response(
-                {
-                    'errors': 'Этот рецепт не был добавлен'
-                    'в список покупок(в избранное)!'
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        object.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
+        if request.method == "DELETE" and object.exists():
+            object.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            status=status.HTTP_201_CREATED,
+            data=self.get_serializer(recipe).data
+        )
 
     @action(["POST", "DELETE"], detail=True)
     def favorite(self, request, **kwargs):

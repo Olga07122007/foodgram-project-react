@@ -1,4 +1,6 @@
 # praktikum_new_diplom
+[![API for YaMDB project workflow](https://github.com/Olga07122007/foodgram-project-react/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/Olga07122007/foodgram-project-react/actions/workflows/main.yml)
+
 
 Проект «Продуктовый помощник». Онлайн-сервис и API для него. На этом сервисе пользователи могут публиковать рецепты, 
 подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», 
