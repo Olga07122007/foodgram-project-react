@@ -88,4 +88,5 @@ docker-compose exec backend python manage.py load_ingredients ingredients.json
 
 ### Адресa:
 Проект доступен по адресу: http://158.160.5.17/  
-Админка Django: http://158.160.5.17/admin/
+Админка Django: http://158.160.5.17/admin/  
+Документация: http://158.160.5.17/api/docs/
