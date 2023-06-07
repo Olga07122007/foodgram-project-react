@@ -158,7 +158,7 @@ class RecipeCreateSerializer(ModelSerializer):
             if ingredient.get('amount') <= 0:
                 raise ValidationError(
                     {
-                        'error': 'ингредиентов не должно быть менее одного'
+                        'error': 'ингредиентов не должно быть менее одного '
                     }
                 )
             ingredients_list.append(ingredient['ingredient']['id'])
