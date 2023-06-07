@@ -158,21 +158,21 @@ class RecipeCreateSerializer(ModelSerializer):
             if ingredient.get('amount') <= 0:
                 raise ValidationError(
                     {
-                        'error': 'Ингредиентов не должно быть менее одного!'
+                        'error': 'ингредиентов не должно быть менее одного'
                     }
                 )
             ingredients_list.append(ingredient['ingredient']['id'])
         if len(ingredients_list) > len(set(ingredients_list)):
             raise ValidationError(
                 {
-                    'error': 'Ингредиенты в рецепте не должны повторяться!'
+                    'error': 'ингредиенты в рецепте не должны повторяться'
                 }
             )
         cooking_time = data.get('cooking_time')
         if cooking_time <= 0:
             raise ValidationError(
                 {
-                    'error': 'Время приготовления должно быть не менее 1 мин!'
+                    'error': 'время приготовления должно быть не менее 1 мин'
                 }
             )
         return data
@@ -208,11 +208,11 @@ class FavoriteSerializer(ModelSerializer):
         )
         if self.context['request'].method == 'DELETE':
             raise ValidationError(
-                'Этот рецепт не был добавлен в избранное!'
+                'этот рецепт не был добавлен в избранное'
             )
         if self.context['request'].method == 'POST' and object.exists():
             raise ValidationError(
-                'Этот рецепт уже был добавлен в избранное!'
+                'этот рецепт уже был добавлен в избранное'
             )
 
         return data
@@ -250,11 +250,11 @@ class ShoppingCartSerializer(ModelSerializer):
         )
         if self.context['request'].method == 'DELETE':
             raise ValidationError(
-                'Этот рецепт не был добавлен в список покупок!'
+                'этот рецепт не был добавлен в список покупок'
             )
         if self.context['request'].method == 'POST' and object.exists():
             raise ValidationError(
-                'Этот рецепт уже был добавлен в список покупок!'
+                'этот рецепт уже был добавлен в список покупок'
             )
 
         return data

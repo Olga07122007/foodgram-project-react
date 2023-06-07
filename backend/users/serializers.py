@@ -52,12 +52,12 @@ class SubscribeSerializer(CustomUserSerializer):
         user = self.context.get('request').user
         if Subscription.objects.filter(author=author, user=user).exists():
             raise ValidationError(
-                detail='Вы уже подписались на этого автора!',
+                detail='вы уже подписались на этого автора',
                 code=status.HTTP_400_BAD_REQUEST
             )
         if user == author:
             raise ValidationError(
-                detail='Вы не можете подписываться на самого себя!',
+                detail='вы не можете подписываться на самого себя',
                 code=status.HTTP_400_BAD_REQUEST
             )
         return data

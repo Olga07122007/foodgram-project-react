@@ -34,7 +34,7 @@ class User(AbstractUser):
         unique=True,
         validators=[
             EmailValidator(
-                message='Введите действительный адрес электронной почты!'
+                message='введите действительный адрес электронной почты'
             )
         ]
     )
