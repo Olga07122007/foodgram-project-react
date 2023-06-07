@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='Django secret key')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = os.getenv('DEBUG', default=True)
 
 
 ALLOWED_HOSTS = ['*']
@@ -76,7 +76,6 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 
 DATABASES = {
     'default': {

@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+from django.core.validators import EmailValidator
+
 from .validators import (
     validate_username,
     UsernameValidator
@@ -26,10 +28,15 @@ class User(AbstractUser):
         'last_name',
     ]
 
-    email = models.EmailField(
+    email = models.CharField(
         verbose_name='Электронная почта',
         max_length=254,
         unique=True,
+        validators=[
+            EmailValidator(
+                message='Введите действительный адрес электронной почты!'
+            )
+        ]
     )
 
     username = models.CharField(
