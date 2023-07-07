@@ -84,9 +84,3 @@ docker-compose exec backend python manage.py collectstatic --no-input
 ```
 docker-compose exec backend python manage.py load_ingredients ingredients.json
 ```
-
-
-### Адресa:
-Проект доступен по адресу: http://158.160.66.253/
-Админка Django: http://158.160.66.253/admin/  
-Документация: http://158.160.66.253/api/docs/
